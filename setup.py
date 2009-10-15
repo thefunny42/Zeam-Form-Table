@@ -25,5 +25,13 @@ setup(name='zeam.form.table',
       install_requires=[
         'setuptools',
         'zeam.form.base',
+        'grokcore.component',
+        # Test
+        'zope.securitypolicy',
+        'zope.app.authentication',
+        'zope.app.testing',
+        'zope.app.zcmlfiles',
+        'zope.testing',
+        'zope.testbrowser',
         ],
       )
