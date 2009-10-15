@@ -1,6 +1,7 @@
 
-from zeam.form.base import Fields, Actions
+from zeam.form.base import Fields, Actions, DISPLAY
 from zeam.form.base.form import GrokViewSupport, StandaloneForm, FormSubmission
+from zeam.form.base.widgets import Widgets
 
 from zeam.form.table.actions import TableActions
 from zeam.form.table import interfaces
@@ -17,6 +18,10 @@ class TableFormCanvas(GrokViewSupport):
     label = u''
     description = u''
     prefix = u'form'
+
+    mode = DISPLAY
+    ignoreRequest = False
+    ignoreContent = True
 
     fields = Fields()
     actions = Actions()
@@ -57,7 +62,7 @@ class TableFormCanvas(GrokViewSupport):
         self.actionWidgets.update()
 
     def getItems(self):
-        raise NotImplementedError
+        return self.context.values()
 
 
 class TableForm(TableFormCanvas, StandaloneForm):

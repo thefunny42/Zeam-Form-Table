@@ -1,5 +1,7 @@
 zeam.form.table
 ===============
 
+A table form can work on more than one item:
+
   >>> from zeam.form.table import TableForm
 
