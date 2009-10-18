@@ -2,5 +2,9 @@
            xmlns:grok="http://namespaces.zope.org/grok">
 
   <include package="zeam.form.base" />
+  <include package="zeam.form.composed" />
+
+  <!-- Grok page templates -->
+  <grok:grok package=".form" />
 
 </configure>

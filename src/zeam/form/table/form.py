@@ -1,12 +1,17 @@
 
-from zeam.form.base import Fields, Actions, DISPLAY
+from megrok import pagetemplate as pt
+
+from zeam.form.base import Fields, Actions, INPUT
 from zeam.form.base.form import GrokViewSupport, StandaloneForm, FormSubmission
 from zeam.form.base.widgets import Widgets
+from zeam.form.composed.form import SubFormBase
 
 from zeam.form.table.actions import TableActions
 from zeam.form.table import interfaces
 
 from grokcore import component as grok
+
+pt.templatedir('default_templates')
 
 
 class TableFormCanvas(GrokViewSupport):
@@ -19,7 +24,7 @@ class TableFormCanvas(GrokViewSupport):
     description = u''
     prefix = u'form'
 
-    mode = DISPLAY
+    mode = INPUT
     ignoreRequest = False
     ignoreContent = True
 
@@ -69,4 +74,17 @@ class TableForm(TableFormCanvas, StandaloneForm):
     """A full standalone TableForm.
     """
     grok.baseclass()
+    grok.implements(interfaces.ITableForm)
 
+
+class SubTableForm(SubFormBase, TableFormCanvas):
+    """A table form which can be used in a composed form.
+    """
+    grok.baseclass()
+    grok.implements(interfaces.ISubTableForm)
+
+
+class SubTableFormTemplate(pt.PageTemplate):
+    """A default template for a SubTableForm
+    """
+    pt.view(SubTableForm)
