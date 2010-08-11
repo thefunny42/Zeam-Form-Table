@@ -3,6 +3,15 @@ import os
 
 version = '1.0'
 
+tests_require = [
+    'zope.securitypolicy',
+    'zope.app.authentication',
+    'zope.app.testing',
+    'zope.app.zcmlfiles',
+    'zope.testing',
+    'zope.testbrowser',
+    ]
+
 setup(name='zeam.form.table',
       version=version,
       description="Form as table, to edit more than one content at a time",
@@ -15,7 +24,7 @@ setup(name='zeam.form.table',
       keywords='zeam form table',
       author='Sylvain Viollon',
       author_email='thefunny@gmail.com',
-      url='',
+      url='http://pypi.python.org/pypi/zeam.form.table',
       license='BSD',
       package_dir={'': 'src'},
       packages=find_packages('src'),
@@ -23,17 +32,14 @@ setup(name='zeam.form.table',
       include_package_data=True,
       zip_safe=False,
       install_requires=[
+        'grokcore.component',
+        'megrok.pagetemplate',
         'setuptools',
         'zeam.form.base',
         'zeam.form.composed',
-        'grokcore.component',
-        'megrok.pagetemplate',
-        # Test
-        'zope.securitypolicy',
-        'zope.app.authentication',
-        'zope.app.testing',
-        'zope.app.zcmlfiles',
-        'zope.testing',
-        'zope.testbrowser',
+        'zope.component',
+        'zope.interface',
         ],
+      tests_require = tests_require,
+      extras_require = {'test': tests_require},
       )

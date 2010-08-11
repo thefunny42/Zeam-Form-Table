@@ -1,8 +1,7 @@
-
 from megrok import pagetemplate as pt
 
 from zeam.form.base import Fields, Actions, INPUT
-from zeam.form.base.form import GrokViewSupport, StandaloneForm, FormSubmission
+from zeam.form.base.form import GrokViewSupport, StandaloneForm, cloneFormData
 from zeam.form.base.widgets import Widgets
 from zeam.form.composed.form import SubFormBase
 
@@ -35,28 +34,26 @@ class TableFormCanvas(GrokViewSupport):
     def __init__(self, context, request):
         super(TableFormCanvas, self).__init__(context, request)
         self.actionWidgets = Widgets(form=self, request=self.request)
-
         self.lines = []
         self.lineWidgets = []
-        count = 1
 
-        for item in self.getItems():
-            submission = FormSubmission(item, request)
+    def updateLines(self):
+        self.lines = []
+        self.lineWidgets = []
 
-            submission.ignoreContent = self.ignoreContent
-            submission.ignoreRequest = self.ignoreRequest
-            submission.mode = self.mode
-            submission.prefix = '%s.line-%d' % (self.prefix, count)
+        for position, item in enumerate(self.getItems()):
+            prefix = '%s.line-%d' % (self.prefix, position)
+            form = cloneFormData(self, content=item, prefix=prefix)
 
-            self.lines.append(submission)
-            self.lineWidgets.append(Widgets(form=submission, request=request))
-            count +=1
+            self.lines.append(form)
+            self.lineWidgets.append(Widgets(form=form, request=self.request))
 
     def updateActions(self):
         self.actions.process(self, self.request)
         self.tableActions.process(self, self.request)
 
     def updateWidgets(self):
+        self.updateLines()
         for widgets in self.lineWidgets:
             widgets.extend(self.fields)
         self.actionWidgets.extend(self.tableActions)

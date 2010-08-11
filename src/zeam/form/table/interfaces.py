@@ -13,6 +13,10 @@ class ITableFormCanvas(IFormCanvas):
 
     lines = interface.Attribute(u"Widgets lines")
 
+    def updateLines():
+        """Prepare widgets and forms for each lines.
+        """
+
     def getItems():
         """Return the list of contents.
         """
