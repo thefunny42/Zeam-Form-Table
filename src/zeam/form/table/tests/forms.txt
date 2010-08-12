@@ -1,7 +1,44 @@
 zeam.form.table
 ===============
 
-A table form can work on more than one item:
+A table form can work on more than one item. For this we need an
+object which have values. A dictionnary is a good example:
+
+  >>> class Person(object):
+  ...     def __init__(self, name, age):
+  ...         self.name = name
+  ...         self.age = age
+
+  >>> content = {
+  ...    'Paul': Person('Paul', 42),
+  ...    'Arthur': Person('Arthur', 24),
+  ...    'Merlin': Person('Merlin', 203412)}
 
   >>> from zeam.form.table import TableForm
+  >>> from zope.publisher.browser import TestRequest
+  >>> from zope.interface.verify import verifyObject
 
+  >>> request = TestRequest()
+  >>> form = TableForm(content, request)
+
+  >>> from zeam.form.table.interfaces import ITableForm
+  >>> verifyObject(ITableForm, form)
+  True
+
+Table ``getItems`` should give access to form values. **The order of
+the elements returned by ``getItems`` should be stable between two
+calls**.
+
+This is used by ``updateLines`` to create widgets for all lines. Those
+are have a line prefix:
+
+  >>> len(form.getItems())
+  3
+
+  >>> form.updateLines()
+  >>> len(form.lines)
+  3
+  >>> [line.prefix for line in form.lines]
+  [u'form.line-0', u'form.line-1', u'form.line-2']
+  >>> len(form.lineWidgets)
+  3

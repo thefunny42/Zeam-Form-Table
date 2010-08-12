@@ -5,6 +5,6 @@
   <include package="zeam.form.composed" />
 
   <!-- Grok page templates -->
-  <grok:grok package=".form" />
+  <grok:grok package="." />
 
 </configure>

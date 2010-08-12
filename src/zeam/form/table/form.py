@@ -1,16 +1,20 @@
 from megrok import pagetemplate as pt
 
-from zeam.form.base import Fields, Actions, INPUT
+from zeam.form.base.actions import Actions
+from zeam.form.base.fields import Fields
 from zeam.form.base.form import GrokViewSupport, StandaloneForm, cloneFormData
+from zeam.form.base.markers import INPUT
 from zeam.form.base.widgets import Widgets
 from zeam.form.composed.form import SubFormBase
 
+from zeam.form.table.select import SelectField
 from zeam.form.table.actions import TableActions
 from zeam.form.table import interfaces
 
 from grokcore import component as grok
 
 pt.templatedir('default_templates')
+
 
 
 class TableFormCanvas(GrokViewSupport):
@@ -45,8 +49,10 @@ class TableFormCanvas(GrokViewSupport):
             prefix = '%s.line-%d' % (self.prefix, position)
             form = cloneFormData(self, content=item, prefix=prefix)
 
+            lineWidget = Widgets(form=form, request=self.request)
+            lineWidget.extend(SelectField(position))
             self.lines.append(form)
-            self.lineWidgets.append(Widgets(form=form, request=self.request))
+            self.lineWidgets.append(lineWidget)
 
     def updateActions(self):
         self.actions.process(self, self.request)
