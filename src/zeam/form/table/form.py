@@ -2,9 +2,10 @@ from megrok import pagetemplate as pt
 
 from zeam.form.base.actions import Actions
 from zeam.form.base.fields import Fields
-from zeam.form.base.form import GrokViewSupport, StandaloneForm, cloneFormData
+from zeam.form.base.form import FormCanvas
+from zeam.form.base.form import StandaloneForm, cloneFormData
 from zeam.form.base.markers import INPUT
-from zeam.form.base.widgets import Widgets
+from zeam.form.base.widgets import Widgets, getWidgetExtractor
 from zeam.form.composed.form import SubFormBase
 
 from zeam.form.table.select import SelectField
@@ -17,27 +18,17 @@ pt.templatedir('default_templates')
 
 
 
-class TableFormCanvas(GrokViewSupport):
+class TableFormCanvas(FormCanvas):
     """A form which is able to edit more than one content as a table.
     """
     grok.baseclass()
     grok.implements(interfaces.ITableFormCanvas)
 
-    label = u''
-    description = u''
-    prefix = u'form'
-
-    mode = INPUT
-    ignoreRequest = False
-    ignoreContent = True
-
-    fields = Fields()
-    actions = Actions()
+    tableFields = Fields()
     tableActions = TableActions()
 
     def __init__(self, context, request):
         super(TableFormCanvas, self).__init__(context, request)
-        self.actionWidgets = Widgets(form=self, request=self.request)
         self.lines = []
         self.lineWidgets = []
 
@@ -48,9 +39,19 @@ class TableFormCanvas(GrokViewSupport):
         for position, item in enumerate(self.getItems()):
             prefix = '%s.line-%d' % (self.prefix, position)
             form = cloneFormData(self, content=item, prefix=prefix)
+            form.selected = False
+
+            # Checkbox to select the line
+            selectedField = SelectField(position)
+            selectedExtractor = getWidgetExtractor(
+                selectedField, form, self.request)
+            if selectedExtractor is not None:
+                value, error = selectedExtractor.extract()
+                if value:
+                    form.selected = True
 
             lineWidget = Widgets(form=form, request=self.request)
-            lineWidget.extend(SelectField(position))
+            lineWidget.extend(selectedField)
             self.lines.append(form)
             self.lineWidgets.append(lineWidget)
 
@@ -61,12 +62,14 @@ class TableFormCanvas(GrokViewSupport):
     def updateWidgets(self):
         self.updateLines()
         for widgets in self.lineWidgets:
-            widgets.extend(self.fields)
+            widgets.extend(self.tableFields)
+        self.fieldWidgets.extend(self.fields)
         self.actionWidgets.extend(self.tableActions)
         self.actionWidgets.extend(self.actions)
 
         for widgets in self.lineWidgets:
             widgets.update()
+        self.fieldWidgets.update()
         self.actionWidgets.update()
 
     def getItems(self):

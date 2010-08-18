@@ -8,6 +8,8 @@ class SelectField(Field):
     # This field is always in input and have a different prefix
     mode = 'input'
     prefix = 'select'
+    ignoreContent = True
+    ignoreRequest = False
 
 
 class SelectFieldWidget(FieldWidget):
