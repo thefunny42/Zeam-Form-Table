@@ -1,10 +1,8 @@
 from megrok import pagetemplate as pt
 
-from zeam.form.base.actions import Actions
 from zeam.form.base.fields import Fields
 from zeam.form.base.form import FormCanvas
 from zeam.form.base.form import StandaloneForm, cloneFormData
-from zeam.form.base.markers import INPUT
 from zeam.form.base.widgets import Widgets, getWidgetExtractor
 from zeam.form.composed.form import SubFormBase
 
@@ -64,8 +62,8 @@ class TableFormCanvas(FormCanvas):
         for widgets in self.lineWidgets:
             widgets.extend(self.tableFields)
         self.fieldWidgets.extend(self.fields)
-        self.actionWidgets.extend(self.tableActions)
         self.actionWidgets.extend(self.actions)
+        self.actionWidgets.extend(self.tableActions)
 
         for widgets in self.lineWidgets:
             widgets.update()
