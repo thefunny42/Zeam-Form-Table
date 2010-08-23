@@ -30,7 +30,7 @@ class TableFormCanvas(FormCanvas):
         self.lines = []
         self.lineWidgets = []
 
-    def updateLines(self):
+    def updateLines(self, mark_selected=False):
         self.lines = []
         self.lineWidgets = []
 
@@ -40,13 +40,16 @@ class TableFormCanvas(FormCanvas):
             form.selected = False
 
             # Checkbox to select the line
-            selectedField = SelectField(position)
-            selectedExtractor = getWidgetExtractor(
-                selectedField, form, self.request)
-            if selectedExtractor is not None:
-                value, error = selectedExtractor.extract()
-                if value:
-                    form.selected = True
+            selectedField = SelectField(identifier=position)
+
+            if mark_selected:
+                # Mark selected lines
+                selectedExtractor = getWidgetExtractor(
+                    selectedField, form, self.request)
+                if selectedExtractor is not None:
+                    value, error = selectedExtractor.extract()
+                    if value:
+                        form.selected = True
 
             lineWidget = Widgets(form=form, request=self.request)
             lineWidget.extend(selectedField)

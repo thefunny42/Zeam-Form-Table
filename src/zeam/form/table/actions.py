@@ -23,7 +23,7 @@ class TableActions(Actions):
             value, error = extractor.extract()
             if value is not NO_VALUE:
                 if not ready:
-                    form.updateLines()
+                    form.updateLines(mark_selected=True)
                     ready = True
                 for line in form.lines:
                     if not line.selected:
