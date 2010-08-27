@@ -57,8 +57,10 @@ class TableFormCanvas(FormCanvas):
             self.lineWidgets.append(lineWidget)
 
     def updateActions(self):
-        self.actions.process(self, self.request)
-        self.tableActions.process(self, self.request)
+        action, status = self.tableActions.process(self, self.request)
+        if action is None:
+            action, status = self.actions.process(self, self.request)
+        return action, status
 
     def updateWidgets(self):
         self.updateLines()

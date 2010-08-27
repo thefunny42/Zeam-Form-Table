@@ -1,7 +1,7 @@
 
 from zope import component
 
-from zeam.form.base.markers import NO_VALUE, SUCCESS
+from zeam.form.base.markers import NO_VALUE, SUCCESS, FAILURE, NOTHING_DONE
 from zeam.form.base.actions import Actions
 from zeam.form.base.errors import Error
 from zeam.form.base.interfaces import IWidgetExtractor, ActionError
@@ -38,4 +38,6 @@ class TableActions(Actions):
                 if not one_selected:
                     form.errors.append(
                         Error(u"You didn't select any item!", None))
-        return SUCCESS
+                    return action, FAILURE
+                return action, SUCCESS
+        return None, NOTHING_DONE
