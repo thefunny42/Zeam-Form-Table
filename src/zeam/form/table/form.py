@@ -24,6 +24,7 @@ class TableFormCanvas(FormCanvas):
 
     tableFields = Fields()
     tableActions = TableActions()
+    emptyDescription = u"There is no items."
 
     def __init__(self, context, request):
         super(TableFormCanvas, self).__init__(context, request)

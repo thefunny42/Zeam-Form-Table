@@ -15,6 +15,10 @@ class SelectField(Field):
 class SelectFieldWidget(FieldWidget):
     grok.adapts(SelectField, None, None)
 
+    def htmlClass(self):
+        cls = ['field', '-'.join([self.form.parent.htmlId(), 'select'])]
+        return ' '.join(cls)
+
 
 class SelectFieldExtractor(WidgetExtractor):
     grok.adapts(SelectField, None, None)
