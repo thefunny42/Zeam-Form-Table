@@ -1,4 +1,3 @@
-from megrok import pagetemplate as pt
 
 from zeam.form.base.fields import Fields
 from zeam.form.base.form import FormCanvas
@@ -11,9 +10,13 @@ from zeam.form.table.actions import TableActions
 from zeam.form.table import interfaces
 
 from grokcore import component as grok
+from megrok import pagetemplate as pt
+from zope.i18nmessageid import MessageFactory
+
+_ = MessageFactory('zeam.form.base')
+
 
 pt.templatedir('default_templates')
-
 
 
 class TableFormCanvas(FormCanvas):
@@ -24,7 +27,7 @@ class TableFormCanvas(FormCanvas):
 
     tableFields = Fields()
     tableActions = TableActions()
-    emptyDescription = u"There are no items."
+    emptyDescription = _(u"There are no items.")
 
     def __init__(self, context, request):
         super(TableFormCanvas, self).__init__(context, request)

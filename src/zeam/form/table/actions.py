@@ -1,11 +1,14 @@
 
-from zope import component
-
 from zeam.form.base.markers import NO_VALUE, SUCCESS, FAILURE, NOTHING_DONE
 from zeam.form.base.actions import Actions
 from zeam.form.base.errors import Error
 from zeam.form.base.interfaces import IWidgetExtractor, ActionError
 from zeam.form.table import interfaces
+
+from zope import component
+from zope.i18nmessageid import MessageFactory
+
+_ = MessageFactory('zeam.form.base')
 
 
 class TableActions(Actions):
@@ -37,7 +40,7 @@ class TableActions(Actions):
                         line.errors.append(Error(e.args[0], line.prefix))
                 if not one_selected:
                     form.errors.append(
-                        Error(u"You didn't select any item!", None))
+                        Error(_(u"You didn't select any item!"), None))
                     return action, FAILURE
                 return action, SUCCESS
         return None, NOTHING_DONE
