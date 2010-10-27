@@ -1,0 +1,3 @@
+recursive-include src *.py *.zcml *.pt *.cpt *.txt
+recursive-include docs *.txt
+include README.txt
