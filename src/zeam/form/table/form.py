@@ -37,14 +37,14 @@ class TableFormCanvas(FormCanvas):
     def updateLines(self, mark_selected=False):
         self.lines = []
         self.lineWidgets = []
-
         for position, item in enumerate(self.getItems()):
             prefix = '%s.line-%d' % (self.prefix, position)
             form = cloneFormData(self, content=item, prefix=prefix)
             form.selected = False
 
             # Checkbox to select the line
-            selectedField = SelectField(identifier=position)
+            factory = getattr(self, 'selectFieldFactory', SelectField)
+            selectedField = factory(identifier=position)
 
             if mark_selected:
                 # Mark selected lines
