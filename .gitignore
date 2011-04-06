@@ -5,6 +5,7 @@
 # *.[oa]
 *~
 *.pyc
+*.cpt.py
 *.egg-info
 .installed.cfg
 bin/
