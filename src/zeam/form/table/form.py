@@ -44,7 +44,8 @@ class TableFormCanvas(FormCanvas):
 
             # Checkbox to select the line
             factory = getattr(self, 'selectFieldFactory', SelectField)
-            selectedField = factory(identifier=position)
+            selectedField = factory(identifier='select')
+            form.selectedField = selectedField
 
             if mark_selected:
                 # Mark selected lines

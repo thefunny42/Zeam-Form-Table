@@ -44,3 +44,54 @@ class TableActions(Actions):
                     return action, FAILURE
                 return action, SUCCESS
         return None, NOTHING_DONE
+
+
+class TableSelectionActions(Actions):
+
+    def process(self, form, request):
+        assert interfaces.ITableFormCanvas.providedBy(form)
+
+        selected_lines = []
+        deselected_lines = []
+        unchanged_lines = []
+
+        # mark selected by request
+        form.updateLines(mark_selected=True)
+        for line in form.lines:
+            data = line.getContentData()
+
+            content_selected = data.get(line.selectedField.identifier)
+
+            if content_selected:
+                if line.selected:
+                    unchanged_lines.append(line)
+                else:
+                    deselected_lines.append(line)
+            else:
+                if line.selected:
+                    selected_lines.append(line)
+                else:
+                    unchanged_lines.append(line)
+
+        status = NOTHING_DONE
+        for action in self:
+            extractor = component.getMultiAdapter(
+                (action, form, request), IWidgetExtractor)
+            value, error = extractor.extract()
+            if value is NO_VALUE:
+                continue
+
+            if action.validate(self):
+                content = form.getContentData().getContent()
+                try:
+                    if action.validate(form):
+                        action(form, content,
+                            selected_lines, deselected_lines, unchanged_lines)
+                    status = SUCCESS
+                except ActionError, e:
+                    self.errors.append(e)
+                    return action, FAILURE
+
+        return None, status
+
+

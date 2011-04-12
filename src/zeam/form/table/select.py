@@ -19,6 +19,9 @@ class SelectFieldWidget(FieldWidget):
         cls = ['field', '-'.join([self.form.parent.htmlId(), 'select'])]
         return ' '.join(cls)
 
+    def prepareContentValue(self, value):
+        return {self.identifier: bool(value)}
+
 
 class SelectFieldExtractor(WidgetExtractor):
     grok.adapts(SelectField, None, None)
@@ -26,5 +29,5 @@ class SelectFieldExtractor(WidgetExtractor):
     def extract(self):
         value, error = WidgetExtractor.extract(self)
         if value == 'selected':
-            return value, None
-        return None, None
+            return True, None
+        return False, None
