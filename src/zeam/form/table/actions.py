@@ -1,8 +1,10 @@
 
 from zeam.form.base.markers import NO_VALUE, SUCCESS, FAILURE, NOTHING_DONE
+from zeam.form.base.markers import getValue
 from zeam.form.base.actions import Actions
 from zeam.form.base.errors import Error
 from zeam.form.base.interfaces import IWidgetExtractor, ActionError
+
 from zeam.form.table import interfaces
 
 from zope import component
@@ -21,6 +23,12 @@ class TableActions(Actions):
         ready = False
 
         for action in self:
+            isPostOnly = getValue(action, 'postOnly', form)
+            if isPostOnly and request.method != 'POST':
+                form.errors.append(
+                    Error('This form was not submitted properly',
+                          form.prefix))
+                return None, FAILURE
             extractor = component.getMultiAdapter(
                 (action, form, request), IWidgetExtractor)
             value, error = extractor.extract()
@@ -50,7 +58,6 @@ class TableSelectionActions(Actions):
 
     def process(self, form, request):
         assert interfaces.ITableFormCanvas.providedBy(form)
-
         selected_lines = []
         deselected_lines = []
         unchanged_lines = []
@@ -59,9 +66,7 @@ class TableSelectionActions(Actions):
         form.updateLines(mark_selected=True)
         for line in form.lines:
             data = line.getContentData()
-
             content_selected = data.get(line.selectedField.identifier)
-
             if content_selected:
                 if line.selected:
                     unchanged_lines.append(line)
@@ -75,6 +80,13 @@ class TableSelectionActions(Actions):
 
         status = NOTHING_DONE
         for action in self:
+            isPostOnly = getValue(action, 'postOnly', form)
+            if isPostOnly and request.method != 'POST':
+                form.errors.append(
+                    Error('This form was not submitted properly',
+                          form.prefix))
+                return None, FAILURE
+
             extractor = component.getMultiAdapter(
                 (action, form, request), IWidgetExtractor)
             value, error = extractor.extract()
