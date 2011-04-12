@@ -4,12 +4,14 @@ from zeam.form.base.widgets import FieldWidget, WidgetExtractor
 
 from grokcore import component as grok
 
+
 class SelectField(Field):
     # This field is always in input and have a different prefix
     mode = 'input'
     prefix = 'select'
     ignoreContent = True
     ignoreRequest = False
+    defaultValue = False
 
 
 class SelectFieldWidget(FieldWidget):
