@@ -34,6 +34,11 @@ class TableFormCanvas(FormCanvas):
         self.lines = []
         self.lineWidgets = []
 
+    def prepareSelectedField(self, field):
+        """ Give a chance to change the behavior of the selected field.
+        You might want to change ignoreRequest or ignoreContent attributes.
+        """
+
     def updateLines(self, mark_selected=False):
         self.lines = []
         self.lineWidgets = []
@@ -43,8 +48,8 @@ class TableFormCanvas(FormCanvas):
             form.selected = False
 
             # Checkbox to select the line
-            factory = getattr(self, 'selectFieldFactory', SelectField)
-            selectedField = factory(identifier='select')
+            selectedField = SelectField(identifier='select')
+            self.prepareSelectedField(selectedField)
             form.selectedField = selectedField
 
             if mark_selected:
