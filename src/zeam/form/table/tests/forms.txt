@@ -39,6 +39,6 @@ are have a line prefix:
   >>> len(form.lines)
   3
   >>> [line.prefix for line in form.lines]
-  [u'form.line-0', u'form.line-1', u'form.line-2']
+  ['form.line-0', 'form.line-1', 'form.line-2']
   >>> len(form.lineWidgets)
   3
