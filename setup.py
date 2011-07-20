@@ -4,12 +4,8 @@ import os
 version = '1.0b2dev'
 
 tests_require = [
-    'zope.securitypolicy',
-    'zope.app.authentication',
-    'zope.app.testing',
-    'zope.app.zcmlfiles',
-    'zope.testing',
-    'zope.testbrowser',
+    'zope.app.wsgi',
+    'zeam.form.base [test]',
     ]
 
 setup(name='zeam.form.table',
