@@ -40,10 +40,10 @@ class TableFormCanvas(FormCanvas):
         self.lineWidgets = []
         self.batching = None
 
-    def prepareSelectedField(self, field):
-        """ Give a chance to change the behavior of the selected field.
-        You might want to change ignoreRequest or ignoreContent attributes.
+    def createSelectedField(self, item):
+        """Return a field to select the line.
         """
+        return SelectField(identifier='select')
 
     def updateLines(self, mark_selected=False):
         self.lines = []
@@ -65,21 +65,19 @@ class TableFormCanvas(FormCanvas):
             form.selected = False
 
             # Checkbox to select the line
-            selectedField = SelectField(identifier='select')
-            self.prepareSelectedField(selectedField)
-            form.selectedField = selectedField
+            form.selectedField = self.createSelectedField(item)
 
             if mark_selected:
                 # Mark selected lines
                 selectedExtractor = getWidgetExtractor(
-                    selectedField, form, self.request)
+                    form.selectedField, form, self.request)
                 if selectedExtractor is not None:
                     value, error = selectedExtractor.extract()
                     if value:
                         form.selected = True
 
             lineWidget = Widgets(form=form, request=self.request)
-            lineWidget.extend(selectedField)
+            lineWidget.extend(form.selectedField)
             self.lines.append(form)
             self.lineWidgets.append(lineWidget)
 
