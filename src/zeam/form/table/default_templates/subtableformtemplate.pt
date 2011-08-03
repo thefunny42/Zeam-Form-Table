@@ -24,4 +24,7 @@
     </tbody>
   </table>
 
+  <p tal:replace="structure view/batching"
+     tal:condition="view/batching" />
+
 </tal:form>

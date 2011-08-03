@@ -8,7 +8,10 @@ from zeam.form.composed.form import SubFormBase
 from zeam.form.table.select import SelectField
 from zeam.form.table.actions import TableActions
 from zeam.form.table import interfaces
+from zeam.utils.batch import batch
+from zeam.utils.batch.interfaces import IBatching
 
+from zope.component import queryMultiAdapter
 from grokcore import component as grok
 from megrok import pagetemplate as pt
 from zope.i18nmessageid import MessageFactory
@@ -25,6 +28,8 @@ class TableFormCanvas(FormCanvas):
     grok.baseclass()
     grok.implements(interfaces.ITableFormCanvas)
 
+    batchSize = 0
+    batchFactory = lambda x: x
     tableFields = Fields()
     tableActions = TableActions()
     emptyDescription = _(u"There are no items.")
@@ -33,6 +38,7 @@ class TableFormCanvas(FormCanvas):
         super(TableFormCanvas, self).__init__(context, request)
         self.lines = []
         self.lineWidgets = []
+        self.batching = None
 
     def prepareSelectedField(self, field):
         """ Give a chance to change the behavior of the selected field.
@@ -42,7 +48,18 @@ class TableFormCanvas(FormCanvas):
     def updateLines(self, mark_selected=False):
         self.lines = []
         self.lineWidgets = []
-        for position, item in enumerate(self.getItems()):
+        self.batching = None
+        items = self.getItems()
+        if self.batchSize:
+            items = batch(
+                items,
+                name=self.prefix,
+                factory=self.batchFactory,
+                count=self.batchSize,
+                request=self.request)
+            self.batching = queryMultiAdapter(
+                (self.getFormForTable(), items, self.request), IBatching)()
+        for position, item in enumerate(items):
             prefix = '%s.line-%d' % (self.prefix, position)
             form = cloneFormData(self, content=item, prefix=prefix)
             form.selected = False
@@ -95,6 +112,9 @@ class TableForm(TableFormCanvas, StandaloneForm):
     grok.baseclass()
     grok.implements(interfaces.ITableForm)
 
+    def getFormForTable(self):
+        return self
+
 
 class SubTableForm(SubFormBase, TableFormCanvas):
     """A table form which can be used in a composed form.
@@ -102,6 +122,8 @@ class SubTableForm(SubFormBase, TableFormCanvas):
     grok.baseclass()
     grok.implements(interfaces.ISubTableForm)
 
+    def getFormForTable(self):
+        return self.getComposedForm()
 
 class SubTableFormTemplate(pt.PageTemplate):
     """A default template for a SubTableForm
