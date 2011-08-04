@@ -92,8 +92,8 @@ class TableFormCanvas(FormCanvas):
         for widgets in self.lineWidgets:
             widgets.extend(self.tableFields)
         self.fieldWidgets.extend(self.fields)
-        self.actionWidgets.extend(self.actions)
         self.actionWidgets.extend(self.tableActions)
+        self.actionWidgets.extend(self.actions)
 
         for widgets in self.lineWidgets:
             widgets.update()
