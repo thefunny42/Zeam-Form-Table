@@ -42,3 +42,7 @@ class IZeamFormTableAPI(IZeamFormBaseAPI):
         u"A table form that can be used in a composed form")
     TableActions = interface.Attribute(
         u"Action being executed on more than one content at a time")
+    TableSelectionActions = interface.Attribute(
+        u"Action executed on the selection of content")
+    TableMultiActions = interface.Attribute(
+        u"Action excted one time for multiple content")
