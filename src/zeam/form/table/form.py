@@ -29,7 +29,8 @@ class TableFormCanvas(FormCanvas):
     grok.implements(interfaces.ITableFormCanvas)
 
     batchSize = 0
-    batchFactory = lambda x: x
+    batchFactory = batch
+    batchItemFactory = lambda x: x
     tableFields = Fields()
     tableActions = TableActions()
     emptyDescription = _(u"There are no items.")
@@ -51,10 +52,10 @@ class TableFormCanvas(FormCanvas):
         self.batching = None
         items = self.getItems()
         if self.batchSize:
-            items = batch(
+            items = self.batchFactory(
                 items,
                 name=self.prefix,
-                factory=self.batchFactory,
+                factory=self.batchItemFactory,
                 count=self.batchSize,
                 request=self.request)
             self.batching = queryMultiAdapter(
