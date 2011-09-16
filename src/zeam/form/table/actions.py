@@ -31,7 +31,7 @@ class TableActions(Actions):
                 form.errors.append(
                     Error('This form was not submitted properly',
                           form.prefix))
-                return None, FAILURE
+                return form, None, FAILURE
             extractor = component.getMultiAdapter(
                 (action, form, request), IWidgetExtractor)
             value, error = extractor.extract()
@@ -52,9 +52,9 @@ class TableActions(Actions):
                 if not one_selected:
                     form.errors.append(
                         Error(_(u"You didn't select any item!"), None))
-                    return action, FAILURE
-                return action, SUCCESS
-        return None, NOTHING_DONE
+                    return form, action, FAILURE
+                return form, action, SUCCESS
+        return form, None, NOTHING_DONE
 
 
 class TableSelectionActions(Actions):
@@ -94,7 +94,7 @@ class TableSelectionActions(Actions):
                 form.errors.append(
                     Error('This form was not submitted properly',
                           form.prefix))
-                return None, FAILURE
+                return form, None, FAILURE
 
             extractor = component.getMultiAdapter(
                 (action, form, request), IWidgetExtractor)
@@ -104,16 +104,16 @@ class TableSelectionActions(Actions):
 
             try:
                 if action.validate(form):
-                    return action, action(
+                    return form, action, action(
                         form,
                         selected_lines,
                         deselected_lines,
                         unchanged_lines)
             except ActionError, e:
                 form.errors.append(Error(e.args[0], form.prefix))
-                return action, FAILURE
+                return form, action, FAILURE
 
-        return None, status
+        return form, None, status
 
 
 class TableMultiActions(Actions):
@@ -135,7 +135,7 @@ class TableMultiActions(Actions):
                 form.errors.append(
                     Error('This form was not submitted properly',
                           form.prefix))
-                return None, FAILURE
+                return form, None, FAILURE
             extractor = component.getMultiAdapter(
                 (action, form, request), IWidgetExtractor)
             value, error = extractor.extract()
@@ -151,13 +151,13 @@ class TableMultiActions(Actions):
 
                 try:
                     if action.validate(form):
-                        return action, action(
+                        return form, action, action(
                             form,
                             selected_lines,
                             unselected_lines)
                 except ActionError, e:
                     form.errors.append(Error(e.args[0], form.prefix))
-                    return action, FAILURE
+                    return form, action, FAILURE
 
-        return None, NOTHING_DONE
+        return form, None, NOTHING_DONE
 
