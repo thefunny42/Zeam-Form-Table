@@ -1,0 +1,52 @@
+<form action="." tal:attributes="action request.URL" method="post"
+      enctype="multipart/form-data"
+      i18n:domain="zeam.form.base">
+
+  <h2 tal:condition="view.label"
+      tal:content="view.label">Label</h2>
+
+  <p tal:condition="view.description"
+     tal:content="view.description">Description</p>
+
+  <table tal:define="columns len(view.tableFields) + 1">
+    <thead>
+      <tr>
+        <th />
+        <th tal:repeat="field view.tableFields"
+            tal:content="field.title">
+          Title
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr tal:repeat="line view.lineWidgets">
+        <td tal:repeat="widget line"
+            tal:content="structure widget.render()">
+        </td>
+      </tr>
+      <tr class="odd" tal:condition="not view.lineWidgets">
+        <td colspan="#"
+            tal:attributes="colspan columns"
+            tal:content="view.emptyDescription">
+          There are no items.
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr tal:condition="view.batching">
+        <td colspan="#"
+            tal:attributes="colspan columns"
+            tal:content="structure view.batching">
+        </td>
+      </tr>
+      <tr tal:condition="view.actionWidgets">
+        <td colspan="#"
+            tal:attributes="colspan columns">
+          <input tal:repeat="widget view.actionWidgets"
+                 tal:replace="structure widget.render()" />
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+
+</form>
