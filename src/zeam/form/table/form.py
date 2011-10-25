@@ -30,7 +30,7 @@ class TableFormCanvas(FormCanvas):
 
     batchSize = 0
     batchFactory = batch
-    batchItemFactory = lambda x: x
+    batchItemFactory = lambda f, x: x
     tableFields = Fields()
     tableActions = TableActions()
     emptyDescription = _(u"There are no items.")

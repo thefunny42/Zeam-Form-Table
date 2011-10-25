@@ -44,7 +44,7 @@ class TableActions(Actions):
                         continue
                     one_selected = True
                     try:
-                        if action.validate(line):
+                        if action.validate(form):
                             content = line.getContentData().getContent()
                             action(form, content, line)
                     except ActionError, e:
