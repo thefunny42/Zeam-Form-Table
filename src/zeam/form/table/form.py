@@ -8,8 +8,7 @@ from zeam.form.composed.form import SubFormBase
 from zeam.form.table.select import SelectField
 from zeam.form.table.actions import TableActions
 from zeam.form.table import interfaces
-from zeam.utils.batch import batch
-from zeam.utils.batch.interfaces import IBatching
+from zeam.utils.batch import Batch, IBatching
 
 from zope.component import queryMultiAdapter
 from grokcore import component as grok
@@ -29,7 +28,7 @@ class TableFormCanvas(FormCanvas):
     grok.implements(interfaces.ITableFormCanvas)
 
     batchSize = 0
-    batchFactory = batch
+    batchFactory = Batch
     batchItemFactory = lambda f, x: x
     tableFields = Fields()
     tableActions = TableActions()

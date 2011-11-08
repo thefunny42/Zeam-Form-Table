@@ -1,13 +1,23 @@
 Changelog
 =========
 
-1.0b2 (unreleased)
-------------------
+1.0 (2011/11/07)
+----------------
 
-* ...
+* Add different strategies to apply actions to table lines. You can by
+  choice have one action that takes all selected and all not selected
+  lines, one actions on lines that have been selected or deselected or
+  lastly an action that execute only on select lines.
+
+* Add support for batching on table forms.
+
+* You can now customize the selection field.
+
+* Update to work with zeam.form.base 1.2.
+
+* Update tests.
 
 1.0b1 (2010/10/27)
 ------------------
 
 * Initial *proof of concept* release.
-
