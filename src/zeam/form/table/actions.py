@@ -26,16 +26,16 @@ class TableActions(Actions):
         ready = False
 
         for action in self:
-            isPostOnly = getValue(action, 'postOnly', form)
-            if isPostOnly and request.method != 'POST':
-                form.errors.append(
-                    Error('This form was not submitted properly',
-                          form.prefix))
-                return form, None, FAILURE
             extractor = component.getMultiAdapter(
                 (action, form, request), IWidgetExtractor)
             value, error = extractor.extract()
             if value is not NO_VALUE:
+                isPostOnly = getValue(action, 'postOnly', form)
+                if isPostOnly and request.method != 'POST':
+                    form.errors.append(
+                        Error('This form was not submitted properly.',
+                              form.prefix))
+                    return form, None, FAILURE
                 if not ready:
                     form.updateLines(mark_selected=True)
                     ready = True
@@ -89,18 +89,18 @@ class TableSelectionActions(Actions):
 
         status = NOTHING_DONE
         for action in self:
-            isPostOnly = getValue(action, 'postOnly', form)
-            if isPostOnly and request.method != 'POST':
-                form.errors.append(
-                    Error('This form was not submitted properly',
-                          form.prefix))
-                return form, None, FAILURE
-
             extractor = component.getMultiAdapter(
                 (action, form, request), IWidgetExtractor)
             value, error = extractor.extract()
             if value is NO_VALUE:
                 continue
+
+            isPostOnly = getValue(action, 'postOnly', form)
+            if isPostOnly and request.method != 'POST':
+                form.errors.append(
+                    Error('This form was not submitted properly.',
+                          form.prefix))
+                return form, None, FAILURE
 
             try:
                 if action.validate(form):
@@ -130,16 +130,16 @@ class TableMultiActions(Actions):
         ready = False
 
         for action in self:
-            isPostOnly = getValue(action, 'postOnly', form)
-            if isPostOnly and request.method != 'POST':
-                form.errors.append(
-                    Error('This form was not submitted properly',
-                          form.prefix))
-                return form, None, FAILURE
             extractor = component.getMultiAdapter(
                 (action, form, request), IWidgetExtractor)
             value, error = extractor.extract()
             if value is not NO_VALUE:
+                isPostOnly = getValue(action, 'postOnly', form)
+                if isPostOnly and request.method != 'POST':
+                    form.errors.append(
+                        Error('This form was not submitted properly.',
+                              form.prefix))
+                    return form, None, FAILURE
                 if not ready:
                     form.updateLines(mark_selected=True)
                     for line in form.lines:

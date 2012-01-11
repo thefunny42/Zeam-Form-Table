@@ -3,6 +3,7 @@
 
   <include package="zeam.form.base" />
   <include package="zeam.form.composed" />
+  <include package="grokcore.chameleon" />
 
   <!-- Grok page templates -->
   <grok:grok package="." />

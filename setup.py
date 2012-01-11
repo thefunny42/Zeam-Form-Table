@@ -29,6 +29,7 @@ setup(name='zeam.form.table',
       zip_safe=False,
       install_requires=[
         'grokcore.component',
+        'grokcore.chameleon',
         'megrok.pagetemplate',
         'setuptools',
         'zeam.form.base >= 1.2',
