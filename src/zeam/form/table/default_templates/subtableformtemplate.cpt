@@ -8,6 +8,14 @@
   <p tal:condition="view.description"
      tal:content="view.description">Description</p>
 
+  <div class="form-error"
+       tal:condition="view.errors">
+    <ul tal:condition="view.formErrors"
+        tal:repeat="error view.formErrors">
+      <li> <span tal:replace="error.title" /> </li>
+    </ul>
+  </div>
+
   <table tal:define="columns len(view.tableFields) + 1">
     <thead>
       <tr>
@@ -42,6 +50,28 @@
       <tr tal:condition="view.actionWidgets">
         <td colspan="#"
             tal:attributes="colspan columns">
+
+          <span class="footer-fields"
+                tal:repeat="widget view.fieldWidgets">
+            <label tal:attributes="for widget.htmlId()"
+                   tal:content="widget.title">
+              Field Name
+            </label>
+            <span class="required"
+                  tal:condition="widget.required"
+                  i18n:translate="">
+              required
+            </span>
+            <span class="error"
+                 tal:condition="widget.error"
+                 tal:content="structure widget.error.title">
+              Validation error.
+            </span>
+            <tal:widget tal:content="structure widget.render()">
+              Widget.
+            </tal:widget>
+          </span>
+
           <input tal:repeat="widget view.actionWidgets"
                  tal:replace="structure widget.render()" />
         </td>
