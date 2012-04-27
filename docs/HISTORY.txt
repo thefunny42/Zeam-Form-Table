@@ -1,10 +1,14 @@
 Changelog
 =========
 
-1.1 (unreleased)
-----------------
+1.0.1 (2012/04/27)
+------------------
 
-* ...
+* Update to use ``grokcore.chameleon`` instead of ``megrok.chameleon``.
+
+* Fix some action type when used with ``postOnly``.
+
+* Fix template, add missing fields in it.
 
 1.0 (2011/11/07)
 ----------------
