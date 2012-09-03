@@ -2,7 +2,7 @@
 from zeam.form.base.fields import Fields
 from zeam.form.base.form import FormCanvas
 from zeam.form.base.form import StandaloneForm, cloneFormData
-from zeam.form.base.widgets import Widgets, getWidgetExtractor
+from zeam.form.base.widgets import Widgets
 from zeam.form.composed.form import SubFormBase
 
 from zeam.form.table.select import SelectField
@@ -69,8 +69,8 @@ class TableFormCanvas(FormCanvas):
 
             if mark_selected:
                 # Mark selected lines
-                selectedExtractor = getWidgetExtractor(
-                    form.selectedField, form, self.request)
+                selectedExtractor = form.widgetFacotry.extractor(
+                    form.selectedField)
                 if selectedExtractor is not None:
                     value, error = selectedExtractor.extract()
                     if value:
