@@ -42,3 +42,13 @@ are have a line prefix:
   ['form.line-0', 'form.line-1', 'form.line-2']
   >>> len(form.lineWidgets)
   3
+
+You can provide your own identifier suffix for a line. This is especially
+useful when the lines can be deleted by the form.
+
+  >>> request = TestRequest()
+  >>> form = TableForm(content, request)
+  >>> form.getItemIdentifier = lambda content, pos: content.name
+  >>> form.updateLines()
+  >>> [line.prefix for line in form.lines]
+  ['form.line-Paul', 'form.line-Merlin', 'form.line-Arthur']

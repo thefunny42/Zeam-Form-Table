@@ -21,6 +21,11 @@ class ITableFormCanvas(IFormCanvas):
         """Return the list of contents.
         """
 
+    def getItemIdentifier(item, position):
+        """A factory with parameters
+           item (the item from getItems),
+           and position (the index in getItems)
+        """
 
 class ITableForm(IForm, ITableFormCanvas):
     """A form which is able to work on more than one item at a time.

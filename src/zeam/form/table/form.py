@@ -60,7 +60,8 @@ class TableFormCanvas(FormCanvas):
             self.batching = queryMultiAdapter(
                 (self.getFormForTable(), items, self.request), IBatching)()
         for position, item in enumerate(items):
-            prefix = '%s.line-%d' % (self.prefix, position)
+            prefix = '%s.line-%s' % (self.prefix,
+                self.getItemIdentifier(item, position))
             form = cloneFormData(self, content=item, prefix=prefix)
             form.selected = False
 
@@ -69,7 +70,7 @@ class TableFormCanvas(FormCanvas):
 
             if mark_selected:
                 # Mark selected lines
-                selectedExtractor = form.widgetFacotry.extractor(
+                selectedExtractor = form.widgetFactory.extractor(
                     form.selectedField)
                 if selectedExtractor is not None:
                     value, error = selectedExtractor.extract()
@@ -102,6 +103,9 @@ class TableFormCanvas(FormCanvas):
 
     def getItems(self):
         return self.context.values()
+
+    def getItemIdentifier(self, item, position):
+        return str(position)
 
 
 class TableForm(TableFormCanvas, StandaloneForm):
