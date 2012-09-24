@@ -3,8 +3,8 @@ zeam.form.table
 ===============
 
 ``zeam.form.table`` is a extension to `zeam.form.base`_ to create CRUD
-forms: it let define define forms that can work on a collection of
-content sharing the same form schema.
+forms: it let define forms that can work on a collection of contents
+sharing the same form schema.
 
 As well ``zeam.form.table`` can be embedded as a sub form in a
 composed form built with `zeam.form.composed`_.

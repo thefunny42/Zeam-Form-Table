@@ -1,10 +1,12 @@
 Changelog
 =========
 
-1.1 (unreleased)
+1.1 (2012/09/24)
 ----------------
 
-* ...
+* Add support to provide item specific identifiers for lines checkbox.
+
+* Update API to use ``zeam.form.base`` 1.2.3.
 
 1.0.1 (2012/04/27)
 ------------------

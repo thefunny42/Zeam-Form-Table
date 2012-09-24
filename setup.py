@@ -1,10 +1,13 @@
 from setuptools import setup, find_packages
 import os
 
-version = '1.1dev'
+version = '1.1'
 
 tests_require = [
+    'zope.configuration',
     'zope.app.wsgi',
+    'zope.testing',
+    'zope.publisher',
     'zeam.form.base [test]',
     ]
 
@@ -32,11 +35,12 @@ setup(name='zeam.form.table',
         'grokcore.chameleon',
         'megrok.pagetemplate',
         'setuptools',
-        'zeam.form.base >= 1.2',
+        'zeam.form.base >= 1.2.3',
         'zeam.form.composed >= 1.3',
         'zeam.utils.batch >= 1.0',
         'zope.component',
         'zope.interface',
+        'zope.i18nmessageid',
         ],
       tests_require = tests_require,
       extras_require = {'test': tests_require},
