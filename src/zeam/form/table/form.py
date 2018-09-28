@@ -1,31 +1,30 @@
-
 from zeam.form.base.fields import Fields
 from zeam.form.base.form import FormCanvas
 from zeam.form.base.form import StandaloneForm, cloneFormData
 from zeam.form.base.widgets import Widgets
 from zeam.form.composed.form import SubFormBase
-
-from zeam.form.table.select import SelectField
-from zeam.form.table.actions import TableActions
 from zeam.form.table import interfaces
+from zeam.form.table.actions import TableActions
+from zeam.form.table.select import SelectField
 from zeam.utils.batch import Batch, IBatching
 
 from zope.component import queryMultiAdapter
+from zope.interface import implementer
 from grokcore import component as grok
 from megrok import pagetemplate as pt
 from zope.i18nmessageid import MessageFactory
 
-_ = MessageFactory('zeam.form.base')
 
+_ = MessageFactory('zeam.form.base')
 
 pt.templatedir('default_templates')
 
 
+@implementer(interfaces.ITableFormCanvas)
 class TableFormCanvas(FormCanvas):
     """A form which is able to edit more than one content as a table.
     """
     grok.baseclass()
-    grok.implements(interfaces.ITableFormCanvas)
 
     batchSize = 0
     batchFactory = Batch
@@ -108,24 +107,25 @@ class TableFormCanvas(FormCanvas):
         return str(position)
 
 
+@implementer(interfaces.ITableForm)
 class TableForm(TableFormCanvas, StandaloneForm):
     """A full standalone TableForm.
     """
     grok.baseclass()
-    grok.implements(interfaces.ITableForm)
 
     def getFormForTable(self):
         return self
 
 
+@implementer(interfaces.ISubTableForm)
 class SubTableForm(SubFormBase, TableFormCanvas):
     """A table form which can be used in a composed form.
     """
     grok.baseclass()
-    grok.implements(interfaces.ISubTableForm)
 
     def getFormForTable(self):
         return self.getComposedForm()
+
 
 class SubTableFormTemplate(pt.PageTemplate):
     """A default template for a SubTableForm

@@ -1,8 +1,7 @@
-
+import doctest
 import unittest
-
-from zope.testing import doctest
 from zeam.form.table.testing import FunctionalLayer
+
 
 def test_suite():
     optionflags = doctest.NORMALIZE_WHITESPACE | doctest.ELLIPSIS
