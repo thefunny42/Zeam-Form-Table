@@ -47,7 +47,7 @@ class TableActions(Actions):
                         if action.validate(form):
                             content = line.getContentData().getContent()
                             action(form, content, line)
-                    except ActionError, e:
+                    except ActionError as e:
                         line.errors.append(Error(e.args[0], line.prefix))
                 if not one_selected:
                     form.errors.append(
@@ -109,7 +109,7 @@ class TableSelectionActions(Actions):
                         selected_lines,
                         deselected_lines,
                         unchanged_lines)
-            except ActionError, e:
+            except ActionError as e:
                 form.errors.append(Error(e.args[0], form.prefix))
                 return form, action, FAILURE
 
@@ -155,7 +155,7 @@ class TableMultiActions(Actions):
                             form,
                             selected_lines,
                             unselected_lines)
-                except ActionError, e:
+                except ActionError as e:
                     form.errors.append(Error(e.args[0], form.prefix))
                     return form, action, FAILURE
 
